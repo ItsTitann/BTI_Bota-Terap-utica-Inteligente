@@ -1,0 +1,10 @@
+{
+  "short_name": "BTI",
+  "name": "BTI - Monitor de conservación",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#f59e0b",
+  "background_color": "#0c0a09"
+}
