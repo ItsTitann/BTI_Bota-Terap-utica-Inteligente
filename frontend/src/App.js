@@ -49,12 +49,12 @@ export default function App() {
   }, []);
 
   const bannerMode = useMemo(() => {
-    if (error) return 'offline';
-    if (!status) return 'offline';
+    const hasValidStatus = !!status && typeof status === 'object' && !Array.isArray(status);
+    if (error || !hasValidStatus) return 'offline';
     return status.source === 'simulator' ? 'simulator' : 'esp32';
   }, [error, status]);
 
-  const online = !!status && !error;
+  const online = !!status && typeof status === 'object' && !Array.isArray(status) && !error;
   const auto = !!status?.modoAuto;
   const controlsDisabled = !online || auto;
 
@@ -213,6 +213,7 @@ export default function App() {
             <SetpointsForm
               currentOn={status?.setpointOn}
               currentOff={status?.setpointOff}
+              source={status?.source}
               onSaved={() => {
                 showToast('Setpoints guardados');
                 refresh();

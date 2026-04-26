@@ -5,7 +5,7 @@ const HOSTNAME = /^(?=.{1,253}$)([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)(
 
 export function isValidEsp32Address(value) {
   if (typeof value !== 'string') return false;
-  const v = value.trim();
+  const v = value.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '');
   if (!v) return false;
   if (IPV4.test(v)) {
     const portMatch = v.match(/:(\d{1,5})$/);
@@ -18,13 +18,18 @@ export function isValidEsp32Address(value) {
   return HOSTNAME.test(v);
 }
 
-export function validateSetpoints(on, off) {
+export function validateSetpoints(on, off, options = {}) {
+  const profile = options?.profile === 'esp32' ? 'esp32' : 'default';
   const nOn = Number(on);
   const nOff = Number(off);
   if (Number.isNaN(nOn) || Number.isNaN(nOff)) {
     return 'Los setpoints deben ser números válidos';
   }
-  if (nOn < -20 || nOn > 80 || nOff < -20 || nOff > 80) {
+  if (profile === 'esp32') {
+    if (nOn < 15 || nOn > 60 || nOff < 10 || nOff > 55) {
+      return 'Rango no válido para este firmware ESP32: ON [15, 60] y OFF [10, 55]';
+    }
+  } else if (nOn < -20 || nOn > 80 || nOff < -20 || nOff > 80) {
     return 'Los setpoints deben estar en el rango [-20, 80] °C';
   }
   if (nOff >= nOn) {

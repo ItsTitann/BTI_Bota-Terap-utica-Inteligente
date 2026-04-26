@@ -3,7 +3,7 @@ import { FloppyDisk } from '@phosphor-icons/react';
 import { validateSetpoints } from '../lib/validation';
 import { setSetpoints } from '../lib/api';
 
-export default function SetpointsForm({ currentOn, currentOff, onSaved }) {
+export default function SetpointsForm({ currentOn, currentOff, onSaved, source }) {
   const [on, setOn] = useState('');
   const [off, setOff] = useState('');
   const [message, setMessage] = useState(null);
@@ -19,7 +19,7 @@ export default function SetpointsForm({ currentOn, currentOff, onSaved }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
-    const err = validateSetpoints(on, off);
+    const err = validateSetpoints(on, off, { profile: source === 'esp32' ? 'esp32' : 'default' });
     if (err) {
       setMessage({ type: 'error', text: err });
       return;
@@ -30,12 +30,22 @@ export default function SetpointsForm({ currentOn, currentOff, onSaved }) {
       setMessage({ type: 'ok', text: 'Setpoints guardados correctamente' });
       onSaved && onSaved(Number(on), Number(off));
     } catch (e2) {
-      const detail = e2?.response?.data?.detail || 'No se pudieron guardar los setpoints';
+      const detail =
+        e2?.userMessage ||
+        e2?.response?.data?.detail ||
+        e2?.response?.data?.error ||
+        e2?.message ||
+        'No se pudieron guardar los setpoints';
       setMessage({ type: 'error', text: detail });
     } finally {
       setSaving(false);
     }
   };
+
+  const rangeHint =
+    source === 'esp32'
+      ? 'Firmware ESP32: ON [15, 60] y OFF [10, 55]'
+      : 'Rango permitido: [-20, 80] °C';
 
   const inputCls =
     'w-full h-12 px-4 bg-stone-950/60 border border-stone-800 rounded-xl font-mono text-lg text-stone-50 focus:outline-none focus:border-amber-500/70 focus:ring-1 focus:ring-amber-500/40 transition-colors';
@@ -72,6 +82,8 @@ export default function SetpointsForm({ currentOn, currentOff, onSaved }) {
           />
         </label>
       </div>
+
+      <p className="mt-3 text-xs text-stone-500">{rangeHint}</p>
 
       {message && (
         <div

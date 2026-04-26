@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BTI App</string>
+    <string name="title_activity_main">BTI App</string>
+    <string name="package_name">com.itstitann.bti</string>
+    <string name="custom_url_scheme">com.itstitann.bti</string>
+</resources>

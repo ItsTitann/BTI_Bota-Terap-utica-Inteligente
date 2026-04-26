@@ -23,7 +23,7 @@ export default function useStatus(intervalMs = 2000) {
       setLastUpdate(new Date());
     } catch (e) {
       if (!mounted.current) return;
-      const msg = e?.response?.data?.detail || e?.message || 'Error desconocido';
+      const msg = e?.userMessage || e?.response?.data?.detail || e?.message || 'Error desconocido';
       setError(msg);
     } finally {
       if (mounted.current) setLoading(false);
