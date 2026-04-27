@@ -213,18 +213,18 @@ Estado actual:
 
 Las capturas funcionales del sistema se almacenan en `docs/pantallas/` con la siguiente nomenclatura:
 
-- `pantalla_1.png`
-- `pantalla_2.png`
+- `pantalla_1.jpeg`
+- `pantalla_2.jpeg`
 
 Renderizado en README:
 
 ### pantalla_1
 
-![pantalla_1](docs/pantallas/pantalla_1.png)
+![pantalla_1](docs/pantallas/pantalla_1.jpeg)
 
 ### pantalla_2
 
-![pantalla_2](docs/pantallas/pantalla_2.png)
+![pantalla_2](docs/pantallas/pantalla_2.jpeg)
 
 ## Escalabilidad y Mejoras Futuras
 
