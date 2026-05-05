@@ -1,4 +1,4 @@
-# BIT (Bota Terapéutica Inteligente)
+# BTI (Bota Terapéutica Inteligente)
 
 ## Descripción del Sistema
 
